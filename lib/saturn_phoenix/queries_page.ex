@@ -28,7 +28,15 @@ defmodule SaturnPhoenix.QueriesPage do
       queries
       |> Enum.map(fn {%Saturn.Query{query: query, stacktrace: stacktrace},
                       %Saturn.QueryStats{count: count, time: time}} ->
-        %{query: query, stacktrace: stacktrace, count: count, time: time}
+        time = System.convert_time_unit(time, :native, :millisecond)
+
+        %{
+          query: query,
+          stacktrace: stacktrace,
+          count: count,
+          time: time,
+          avg: Float.round(time / count, 2)
+        }
       end)
       |> Enum.map(fn %{stacktrace: stacktrace} = query ->
         %{
@@ -69,8 +77,12 @@ defmodule SaturnPhoenix.QueriesPage do
       %{
         field: :time,
         header: "Total Time (ms)",
-        sortable: :desc,
-        format: &format_time/1
+        sortable: :desc
+      },
+      %{
+        field: :avg,
+        header: "Average Running Time (ms)",
+        sortable: :desc
       }
     ]
   end
@@ -93,10 +105,6 @@ defmodule SaturnPhoenix.QueriesPage do
 
   defp format_mfa({mod, fun, arity}) do
     "#{String.replace_prefix(to_string(mod), "Elixir.", "")}.#{fun}/#{arity}"
-  end
-
-  defp format_time(time) do
-    System.convert_time_unit(time, :native, :millisecond)
   end
 
   defp row_attrs(_table) do

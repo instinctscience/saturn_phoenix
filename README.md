@@ -2,7 +2,7 @@
 
 Display [Saturn]-gathered query statistics in the [Phoenix LiveDashboard].
 
-![video showing the "Saturn" page in Phoenix LiveDashboard live-updating with query metrics](saturn_phoenix.mp4)
+![video showing the "Saturn" page in Phoenix LiveDashboard live-updating with query metrics](saturn_phoenix.gif)
 
 ## Installation
 
